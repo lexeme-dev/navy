@@ -3,10 +3,9 @@ import { TabValue, SelectTabEvent, SelectTabData, makeStyles, shorthands, TabLis
 import { Stack, IStackStyles, IStackTokens } from '@fluentui/react/lib/Stack';
 import {SearchBox, Pivot, Spinner, SpinnerSize} from '@fluentui/react';
 import { OptionsRegular, SettingsRegular } from '@fluentui/react-icons';
-import { TaskCard } from './TaskCard'
+import { CitableCard } from './CitableCard'
+import { CitationManager } from './common/CitationManager';
 import { SettingProps, SettingsTab } from './SettingsTab'
-import {Hit, search} from "./Suggestor";
-import {FilterProps, FilterTab} from "./FilterTab";
 
 const useStyles = makeStyles({
   searchbox: {
@@ -31,10 +30,7 @@ const numericalSpacingStackTokens: IStackTokens = {
 
 export interface PaneProps {
   settingProps: SettingProps;
-  filterProps: FilterProps;
-  isCommandRunning: boolean;
-  allHits: Hit[];
-  onSearch: (query: string) => Promise<void>;
+  citationManager: CitationManager<Word.ContentControl>;
 }
 
 export const Pane = (props: PaneProps) => {
@@ -46,27 +42,22 @@ export const Pane = (props: PaneProps) => {
 
   return (
     <>
-      <SearchBox className={styles.searchbox} onSearch={props.onSearch} />
+      <SearchBox className={styles.searchbox} />
       <TabList selectedValue={selectedValue || "tabNew"} onTabSelect={onTabSelect} className={styles.tabList} size="small">
-        <Tab value="tabNew">New</Tab>
+        <Tab value="tabSources">Sources</Tab>
         <Tab value="tabBookmarked" className={styles.lastTab}>Bookmarked</Tab>
-        <Tab value="filters" icon={<OptionsRegular />} />
         <Tab value="settings" icon={<SettingsRegular />} />
       </TabList>
       <div>
-        {(!selectedValue || selectedValue === 'tabNew') &&
+        {(!selectedValue || selectedValue === 'tabSources') &&
           <>
-            { props.isCommandRunning && <Spinner size={SpinnerSize.large} label={"Wordsmith is thinking..."} style={{alignSelf: "center"}}/> }
             <Stack className={styles.stack} tokens={numericalSpacingStackTokens} >
-              { (props.allHits).map((hit) => <TaskCard info={hit} key={hit.id}/> ) }
+              { (props.citationManager.citables).map((citable, index) => <CitableCard citable={citable} citationManager={props.citationManager} key={index}/> ) }
             </Stack>
           </>
         }
         {(!selectedValue || selectedValue === 'settings') &&
             <SettingsTab {...props.settingProps} />
-        }
-        {(!selectedValue || selectedValue === 'filters') &&
-            <FilterTab {...props.filterProps} />
         }
       </div>
     </>
