@@ -1,8 +1,8 @@
 import React from 'react';
 import { makeStyles, shorthands, Card, CardFooter, CardHeader, CardPreview, Button, Body1, Caption1, Text } from '@fluentui/react-components';
 import { BookmarkRegular, ClipboardRegular, ShareRegular } from "@fluentui/react-icons";
-import { Citable } from "./common/citables"
-import { Citation, CitationManager } from "./common/CitationManager"
+import { Citable } from "../../../../common/Citables"
+import { Citation, CitationManager } from "../../../../common/CitationManager"
 import {SettingProps} from "./SettingsTab";
 
 const useStyles = makeStyles({

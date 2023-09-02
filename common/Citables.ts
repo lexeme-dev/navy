@@ -1,21 +1,15 @@
-// @ts-nocheck 
-// just to remove warnings for now
-import * as ce from "./citationElements";
+import * as ce from "./CitationElements";
 
 abstract class Citable {
-  cite(markup: boolean) {
-    return "";
-  }
-  shortCite(markup: boolean) {
-    return "";
-  }
-  pinCite(page: string, pageEnd: string | null, markup: boolean) {
-    return "";
-  }
-  shortPinCite(page: string, pageEnd: string | null, markup: boolean) {
-    return "";
-  }
-  sourceUrl?: string
+  abstract cite(markup: boolean): string;
+
+  abstract shortCite(markup: boolean): string;
+
+  abstract pinCite(page: string, pageEnd: string | null, markup: boolean): string;
+
+  abstract shortPinCite(page: string, pageEnd: string | null, markup: boolean): string;
+
+  abstract sourceUrl?: string;
   static displayName: string;
   static description: string;
 }
@@ -48,42 +42,39 @@ class Journal extends Citable implements IPeriodical {
 
   sourceUrl?: string;
 
-  constructor(
-    props: IJournal,
-    sourceUrl: string="",
-  ) {
-    super()
+  constructor(props: IJournal, sourceUrl: string = "") {
+    super();
     Object.assign(this, props);
     this.sourceUrl = sourceUrl;
   }
 
-  cite(markup: boolean=true) {
+  cite(markup: boolean = true) {
     let citation: string = "";
-    citation += `${this.author.value}, `
+    citation += `${this.author.value}, `;
     if (markup) {
-      citation += `<i>${this.title.value}</i>, `
+      citation += `<i>${this.title.value}</i>, `;
     } else {
-      citation += `${this.title.value}, `
+      citation += `${this.title.value}, `;
     }
-    citation += `${this.volume.value} ${this.publication.value} ${this.page.value} (${this.year.value})`
+    citation += `${this.volume.value} ${this.publication.value} ${this.page.value} (${this.year.value})`;
     if (this.parenthetical) {
-      citation += ` (${this.parenthetical.value})`
+      citation += ` (${this.parenthetical.value})`;
     }
     //citation += "."
 
     return citation;
   }
 
-  shortCite(markup: boolean=true) {
-    return `${this.shortName.value}`
+  shortCite(markup: boolean = true) {
+    return `${this.shortName.value}`;
   }
 
-  pinCite(page: string, pageEnd: string | null = null, markup: boolean=true) {
-    return ""
+  pinCite(page: string, pageEnd: string | null = null, markup: boolean = true) {
+    return "";
   }
 
-  shortPinCite(page: string, pageEnd: string | null = null, markup: boolean=true) {
-    return ""
+  shortPinCite(page: string, pageEnd: string | null = null, markup: boolean = true) {
+    return "";
   }
 }
 

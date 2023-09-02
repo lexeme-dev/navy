@@ -1,4 +1,4 @@
-import { Citable } from "./citables";
+import { Citable } from "./Citables";
 
 interface Citation<DocumentRange> {
   citable: Citable;
